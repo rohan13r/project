@@ -101,59 +101,51 @@ while True:
                         Ev_ID=operations.AutoGenerate_prodID()
                         print("prod ID Generated - "+str(Ev_ID))
                         print("Enter prod Name:")
-                        Ev_Name=input()
-                        print("Enter Start Date (YYYY-MM-DD):")
-                        St_dt=input()
-                        print("Enter Start Time (HH:MM:SS):")
-                        St_t=input()
-                        print("Enter End Date (YYYY-MM-DD):")
-                        En_dt=input()
-                        print("Enter End Time (HH:MM:SS):")
-                        En_t=input()
-                        print("Enter Total Seats:")
+                        prodtitle=input()
+                        print("Enter prod Type:")
+                        prodtype=input()
+                        print("Enter Price per day:")
+                        prodprice=input()
+                        print("Enter Total Stock:")
+                        available=input()
                         try:
-                            Cap=int(input())
+                            operations.Create_prod(n,'prod.json',prodId, prodtitle, prodtype,prodprice,available)
+                            print("prod created successfully")
                         except ValueError:
                             print("Please enter valid data")
                             continue
-                        if (len(Ev_Name)*len(Ev_ID)*len(St_dt)*len(En_dt)*len(str(Cap)))==0 or len(St_dt)!=10 or len(En_dt)!=10 or len(St_t)!=8 or len(En_t)!=8 or St_dt>En_dt or (St_dt==En_dt and St_t>En_t):
-                            print("Please enter valid data")
-                            continue
-                        else:
-                            operations.Create_prod(n,'prod.json',Ev_ID,Ev_Name,St_dt,St_t,En_dt,En_t,[],Cap,Cap)
-                            print("prod created successfully")
                     elif i1==2:
-                        ev_details=operations.View_prods(n,'prod.json')
+                        pd_details=operations.View_prods(n,'prod.json')
                         if len(ev_details)==0:
                             print("No prods created yet! \n")
                         else:
-                            for i in range(len(ev_details)):
-                                print("Product ID: "+str(ev_details[i]['ID']))
-                                print("Product Name: " +str(ev_details[i]['Name']))
-                                print("Seller: " +str(ev_details[i]['seller']))
-                                print("Seats Available: "+str(ev_details[i]['Seats Available']))
+                            for i in range(len(pd_details)):
+                                print("Product ID: "+str(pd_details[i]['ProductID']))
+                                print("Product Name: " +str(pd_details[i]['Product Title']))
+                                print("Seller: " +str(pd_details[i]['seller']))
+                                print("Seats Available: "+str(pd_details[i]['Total Stock Available']))
                                 print('\n')
                     elif i1==3:
                         print("Enter Product ID")
-                        ev_id=input()
+                        pd_id=input()
                         f14=open('prod.json','r')
                         try:
                             c14=str(json.load(f14))
-                            if ev_id not in c14:
+                            if pd_id not in c14:
                                 print("Invalid prod ID")
                                 continue
                         except JSONDecodeError:
                             print("prods not available")
                             continue
-                        d=operations.View_prod_ByID('prod.json',ev_id)
-                        print("prod Name: " +str(d[0]['Name']))
+                        d=operations.View_prod_ByID('prod.json',pd_id)
+                        print("prod Name: " +str(d[0]['Product Title']))
                         print("seller: " +str(d[0]['seller']))
-                        print("Seats Available: "+str(d[0]['Seats Available']))
+                        print("Seats Available: "+str(d[0]['Total Stock Available']))
                         print('\n')
                     elif i1==4:
                         print("Enter prod ID:")
                         ev_id=input()
-                        print("Enter detail to be Updated ( Name || Start Date || Start Time || End Time || End Date ): ")
+                        print("Enter detail to be Updated ( Title || Type || Price per day): ")
                         dtl=input()
                         print("Enter new value:")
                         updtl=input()
